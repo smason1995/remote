@@ -37,6 +37,9 @@ sub main{
     elsif($args[0] eq 'help'){
         help_menu(@args);
     }
+    elsif($args[0] eq 'remove'){
+        remove(@args);
+    }
     else{
         println("$args[0] is an invalid command.\n",
                 "Run `remote help` for assistance in finding the right command");
@@ -94,12 +97,12 @@ sub remote_action{
 
     #makes sure that the [SSH|SFTP] action to be executed is valid and executes it
     if($url_details eq '' && index($args[1], '@') >= 0){
-        system("$args[0] $args[1]");
-        return 0;
+        exec("$args[0] $args[1]");
+        #        return 0;
     }
     elsif($url_details ne ''){
-        system("$args[0] $url_details");
-        return 0;
+        exec("$args[0] $url_details");
+        #         return 0;
     }
     else{
         println("Error: $args[1] is not a valid profile nor connection,\nplease check input");
@@ -234,6 +237,64 @@ sub help_menu{
     while(($key, $value) = each(%options)){
         print("$count) $key\n\t$value\n");
         $count += 1;
+    }
+
+    return 0;
+}
+
+#--------------------------------------#
+# Subroutine: remove                   #
+#                                      #
+# Description:                         #
+# Removes profile from remote_profiles #
+#--------------------------------------#
+sub remove{
+    my @args = @_; #parameter array
+    my @file_contents; #array of file contents
+    my $args_num = scalar @args; #number of parameters received
+    my $save_file = 'remote_profiles'; #file that is to be edited 
+    my $profiles_dir; #holds path to directory of profiles
+    my $file_ptr; #var to hole file reference
+    my $index; #array indexing integer
+
+    if($args_num != 2){
+        println('Invalid number of argument given. ',
+                "Expected 2, was given $args_num.",
+                'Proper format is: remote remove [profile]');
+
+        return 1;
+    }
+
+    #checks to make sure that the profiles directory exists
+    $profiles_dir = File::HomeDir->my_home . '/.remote_profiles';
+
+    unless(-d $profiles_dir){
+        println('No profiles have been written');
+    }
+
+    #opens file to be read in line by line
+    $file_ptr = path("$profiles_dir/$save_file")->openr_utf8;
+
+    #reads file line by line and checks is received profile name already exists
+    while(my $row = $file_ptr->getline()){
+        chomp($row);
+        push(@file_contents, $row);
+    }
+
+    for(my $ind = 0; $ind < @file_contents; $ind += 1){
+        if($args[1] eq substr($file_contents[$ind], 0, index($file_contents[$ind], ' '))){
+            $index = $ind;
+            last;
+        }
+    }
+
+    splice(@file_contents, $index, 1);
+
+    #rewrite profiles to remote_profiles
+    $file_ptr = path("$profiles_dir/$save_file")->openw_utf8;
+
+    foreach my $profile (@file_contents){
+        $file_ptr->print("$profile\n");
     }
 
     return 0;
