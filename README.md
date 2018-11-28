@@ -17,6 +17,8 @@ sftp                will execute secure-file-transfer-protocol via the command l
 
 save                will write a new profile to the remote session storage
 
+remove              will remove an existing profile from remote session storage
+
 print-profiles      will display all known profiles to the screen
 
 help                will print out the command available to execute
