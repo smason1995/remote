@@ -255,8 +255,9 @@ sub remove{
     my $save_file = 'remote_profiles'; #file that is to be edited 
     my $profiles_dir; #holds path to directory of profiles
     my $file_ptr; #var to hole file reference
-    my $index; #array indexing integer
+    my $index = -1; #array indexing integer
 
+    #checks if the correct number of arguments were passed
     if($args_num != 2){
         println('Invalid number of argument given. ',
                 "Expected 2, was given $args_num.",
@@ -275,12 +276,13 @@ sub remove{
     #opens file to be read in line by line
     $file_ptr = path("$profiles_dir/$save_file")->openr_utf8;
 
-    #reads file line by line and checks is received profile name already exists
+    #reads file line by line
     while(my $row = $file_ptr->getline()){
         chomp($row);
         push(@file_contents, $row);
     }
 
+    #finds the profile in the content array
     for(my $ind = 0; $ind < @file_contents; $ind += 1){
         if($args[1] eq substr($file_contents[$ind], 0, index($file_contents[$ind], ' '))){
             $index = $ind;
@@ -288,11 +290,18 @@ sub remove{
         }
     }
 
-    splice(@file_contents, $index, 1);
+    #if profile was not found, run this
+    if($index == -1){
+        println("$args[0] not found");
+        return 1;
+    }
 
-    #rewrite profiles to remote_profiles
+    splice(@file_contents, $index, 1); #removes profile from content array
+
+    #opens file to be rewritten
     $file_ptr = path("$profiles_dir/$save_file")->openw_utf8;
 
+    #rewrites file
     foreach my $profile (@file_contents){
         $file_ptr->print("$profile\n");
     }
