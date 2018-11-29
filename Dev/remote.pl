@@ -117,7 +117,7 @@ sub remote_action{
 sub profile_maint{
     my @args = @_; #parameters
     my $args_num = scalar @args; #number of parameters received
-    my $save_file = 'remote_profiles'; #file that is the profile is written into 
+    my $save_file; #file that is the profile is written into 
     my $profiles_dir; #holds path to directory of profiles
     my $file_ptr; #var to hole file reference
 
@@ -132,15 +132,24 @@ sub profile_maint{
         return 1;
     }
 
-    #checks to make sure that the profiles directory exists
+    #path to .remote_profiles directory
     $profiles_dir = File::HomeDir->my_home . '/.remote_profiles';
 
+    #checks to make sure that the profiles directory exists
     unless(-d $profiles_dir){
         mkdir $profiles_dir;
     }
 
+    #path to remote_profiles
+    $save_file = "$profiles_dir/remote_profiles";
+
+    #checks if remote_profiles exists before opening to read
+    unless(-e $save_file){
+        $file_ptr = path("$save_file")->openw_utf8;
+    }
+
     #opens file to be read in line by line
-    $file_ptr = path("$profiles_dir/$save_file")->openr_utf8;
+    $file_ptr = path("$save_file")->openr_utf8;
 
     #reads file line by line and checks is received profile name already exists
     while(my $row = $file_ptr->getline()){
@@ -153,7 +162,7 @@ sub profile_maint{
     }
 
     #write profile to remote_profiles
-    $file_ptr = path("$profiles_dir/$save_file")->opena_utf8;
+    $file_ptr = path("$save_file")->opena_utf8;
     $file_ptr->print("$args[2] $args[1]\n");
 
     return 0;
