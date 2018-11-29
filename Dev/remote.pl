@@ -98,11 +98,9 @@ sub remote_action{
     #makes sure that the [SSH|SFTP] action to be executed is valid and executes it
     if($url_details eq '' && index($args[1], '@') >= 0){
         exec("$args[0] $args[1]");
-        #        return 0;
     }
     elsif($url_details ne ''){
         exec("$args[0] $url_details");
-        #         return 0;
     }
     else{
         println("Error: $args[1] is not a valid profile nor connection,\nplease check input");
