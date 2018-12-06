@@ -316,6 +316,39 @@ sub remove{
     return 0;
 }
 
+#---------------------------------------------#
+# Subroutine: muli_remove                     #
+#                                             #
+# Description:                                #
+# Loops remove() to remove multiple profiles  #
+# A temporary function until a better routine #
+# is devised                                  #
+#---------------------------------------------#
+sub multi_remove{
+    my @args = @_; #parameters array
+    my @params; #array of parameters to pass to remove
+    my $arg_num = scalar @args; #number of arguments
+    my $elem; #elements of parameters array;
+
+    push(@params, $args[0]); #sets @params[0] to 'remove'
+
+    #loops through profiles to remove them from storage
+    for(my $index = 1; $index < $arg_num; $index += 1){
+        #if @params has two elements, remove the last one
+        if(scalar @params == 2){
+            pop(@params);
+        }
+
+        #sets @params last element to a profile from @args
+        push(@params, $args[$index]);
+
+        #call to remove() to delete a profile
+        remove(@params);
+    }
+
+    return 0;
+}
+
 #-------------------------------------#
 # Subroutine: println                 #
 #                                     #
