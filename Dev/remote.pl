@@ -31,7 +31,7 @@ sub main{
     elsif($args[0] eq 'save'){
         profile_maint(@args);
     }
-    elsif($args[0] eq 'print-profiles'){
+    elsif($args[0] eq 'print'){
         print_profiles(@args);
     }
     elsif($args[0] eq 'help'){
@@ -184,7 +184,7 @@ sub print_profiles{
     if($args_num > 1 || $args_num < 1){
         println('Invalid number of arguments given. ',
                 "Expected 1, given $args_num.\n",
-                "Proper format is: remote print-profiles");
+                "Proper format is: remote print");
 
         return 1;
     }
@@ -220,7 +220,7 @@ sub help_menu{
     my %options = ('ssh' => 'executes SSH protocol on profile',
                    'sftp' => 'executes sftp protocol on profile',
                    'save' => 'writes new profile to file',
-                   'print-profiles' => 'dsiplays all currently saved profiles',
+                   'print' => 'dsiplays all currently saved profiles',
                    'help' => 'displays all executable actions available');
     my $args_num = scalar @args; #number of arguments in args
     my $count = 1; #counter for the list of actions
