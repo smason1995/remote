@@ -28,14 +28,4 @@ the Prod directory. If you want to use the version in development, then you can
 find it in the Dev directory.
 
 TODO (in no particular order):
-    -Add optional GUI (Currently working with wxWidget via
-        wxPerl; TBD if this will be used in production)
-    -Make a webpage on the Github for remote
-    -Add multiple profile deletion to remove
-    -Add search capabilities to print-profiles (narrowing output
-        to find specific profiles)
-    -Make ssh and sftp ask user if they want to save unknown
-        connections for future use
-    -Look into encrypting remote_profiles file for increased
-        security (maybe optional?)
-    -Look into adding command and profile tab-autocompletion
+     -Expand to cover most remoting needs

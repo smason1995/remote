@@ -3,7 +3,7 @@
 #-----------------------------------#
 # PROGRAM: SSH/SFTP Profile Manager #
 # AUTHOR:  Sydney Ann Mason         #
-# VERSION: 20181129                 #
+# VERSION: 20190110                 #
 #-----------------------------------#
 
 #---------#
