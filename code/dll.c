@@ -12,35 +12,6 @@
 
 #include"dll.h"
 
-/***************************
- * Linked List Data Struct *
- ***************************/
-typedef struct node{
-    void *data; //DLL data element
-    int key;    //DLL data element position
-    Node *next; //DLL pointer to the next element(default: NULL)
-    Node *prev; //DLL pointer to the previous element(default: NULL)
-} Node;
-
-/********************
- * Global Variables *
- ********************/
-Node *head = NULL; //this link always point to first Link
-
-Node *last = NULL; //this link always point to last Link
-
-Node *current = NULL; //this link always points to the current link
-
-/***********************
- * Function Signatures *
- ***********************/
-void push(Node*, void*);
-void pop(Node*);
-void* get(int);
-Node* delete(int);
-bool isEmpty();
-int length();
-
 /*************
  * Functions *
  *************/
