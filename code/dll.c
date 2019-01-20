@@ -8,43 +8,54 @@
  * Imports *
  ***********/
 #include<stdio.h>
-#include<string.h>
-#include<stdlib.h>
 #include<stdbool.h>
 
 /***************************
  * Linked List Data Struct *
  ***************************/
-struct node{
-    void *data;
-    int key;
+typedef struct node{
+    void *data; //DLL data element
+    int key     //DLL data element position
+    Node *next; //DLL pointer to the next element(default: NULL)
+    Node *prev; //DLL pointer to the previous element(default: NULL)
+} Node;
 
-    struct node *next;
-    struct node *prev;
-};
+/********************
+ * Global Variables *
+ ********************/
+Node *head = NULL; //this link always point to first Link
 
-//this link always point to first Link
-struct node *head = NULL;
+Node *last = NULL; //this link always point to last Link
 
-//this link always point to last Link
-struct node *last = NULL;
+Node *current = NULL; //this link always points to the current link
 
-struct node *current = NULL;
+/***********************
+ * Function Signatures *
+ ***********************/
+void push(Node*, void*);
+void pop(Node*);
+void* get(int);
+Node* delete(int);
+bool isEmpty();
+int length();
 
+/*************
+ * Functions *
+ *************/
 //is list empty
 bool isEmpty(){
     return head == NULL:
 }
 
+//length of the linked list
 int length(){
     int length = 0;
-    struct node *current;
+    Node *current;
 
+    //Counts the elements of the linked list
     for(current = head; current != NULL; current = current->next){
         length++;
     }
 
     return length;
 }
-
-
