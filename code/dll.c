@@ -10,12 +10,14 @@
 #include<stdio.h>
 #include<stdbool.h>
 
+#include"dll.h"
+
 /***************************
  * Linked List Data Struct *
  ***************************/
 typedef struct node{
     void *data; //DLL data element
-    int key     //DLL data element position
+    int key;    //DLL data element position
     Node *next; //DLL pointer to the next element(default: NULL)
     Node *prev; //DLL pointer to the previous element(default: NULL)
 } Node;
