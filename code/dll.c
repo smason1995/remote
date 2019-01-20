@@ -12,6 +12,15 @@
 
 #include"dll.h"
 
+/********************
+ * Global Variables *
+ ********************/
+Node *head = NULL; //this link always point to first Link
+
+Node *last = NULL; //this link always point to last Link
+
+Node *current = NULL; //this link always points to the current link
+
 /*************
  * Functions *
  *************/
