@@ -1,7 +1,7 @@
 /*******************************************
  * Remote, SSH/SFTP remote profile manager *
  * author: Sydney Ann Mason                *
- * version:                                *
+ * version: 20190123                       *
  *******************************************/
 
 /***********
