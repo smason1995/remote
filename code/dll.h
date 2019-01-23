@@ -6,25 +6,39 @@
  ***********/
 typedef struct node{
     void *data;
-    int key;
     struct *next;
     struct *prev;
 } Node;
 
-/********************
- * Global Variables *
- ********************/
-extern Node *head;
-extern Node *last;
-extern Node *current;
+typedef struct dllist{
+    Node *head;
+    Node *tail;
+    Node *current;
+    int size;
+} Dllist;
 
 /*************
  * Functions *
  *************/
-extern void push(Node* link, void* val);
-extern void pop(Node* link);
-extern void* get(int key);
-extern Node* remove(int key);
-extern bool isEmpty();
-extern int length();
+Dllist* dllist_create(void);
+
+void dllist_destroy(Dllist *dllist);
+
+int dllist_push_front(Dllist *dllist, void *data);
+
+int dllist_push_back(Dllist *dllist, void *data);
+
+void* dllist_pop_front(Dllist *dllist);
+
+void* dllist_pop_back(Dllist *dllist);
+
+int dllist_step_forward(Dllist *dllist);
+
+int dllist_step_backward(Dllist *dllist);
+
+void* dllist_read_index(Dllist *dllist, int index);
+
+int dllist_insert_after(Dllist *dllist, int index, void *data);
+
+void* dllist_extract_after(Dllist *dllist, int index);
 #endif
