@@ -1,3 +1,9 @@
+/*************************************
+ * Generic Doubly Linked List header *
+ * author: Sydney Ann Mason          *
+ * version: 20190123                 *
+ *************************************/
+
 #ifdef _DLL_H_
 #define _DLL_H_
 

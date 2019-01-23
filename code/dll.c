@@ -1,7 +1,7 @@
 /**************************************
  * Generic Doubly Linked List library *
  * author: Sydney Ann Mason           *
- * version: 20190119                  *
+ * version: 20190123                  *
  **************************************/
 
 #include<stdlib.h>
