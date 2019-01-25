@@ -4,13 +4,13 @@
  * version: 20190123                  *
  **************************************/
 
-#include<stdlib.h>
+#include "dll.h"
 
-#include"dll.h"
+#include<stdlib.h>
 
 Dllist* dllist_create(void){
     Dllist *dll;
-    dll = malloc(sizeof(Dllist));
+    dll = (Dllist *) malloc(sizeof(Dllist));
     if(dll != NULL){
         dll->head = NULL;
         dll->tail = NULL;
@@ -21,10 +21,10 @@ Dllist* dllist_create(void){
 }
 
 void dllist_destroy(Dllist *dllist){
-    Node * save_nexxt;
+    Node * save_next;
     dllist->current = dllist->head;
     while(dllist->current != NULL){
-        save_next = dllsit->current->next;
+        save_next = dllist->current->next;
         free(dllist->current->data);
         free(dllist->current);
     }
@@ -146,50 +146,4 @@ void* dllist_read_index(Dllist *dllist, int index){
         target = target->next;
     }
     return(target->data);
-}
-
-int dllist_insert_afer(Dllist *dllist, int index, void *data){
-    if(((dllist->size - index - 1) < 0) || (index < 0)){
-        return 1;
-    }
-    Node *target;
-    target = dllist->head;
-    for(int i = 0; i < index ; i++){
-        target = target->next
-    }
-    Node *node;
-    node = malloc(sizeof(Node));
-    if(node == NULL){
-        retrun -1;
-    }
-    node->data = data;
-    node->next = target->next;
-    node->prev = target;
-    target->next->prev = node;
-    target->next = node;
-    if(index == dllist->size - 1){
-        dllist->tail = node;
-    }
-    dllist->size++;
-    return 0;
-    
-}
-
-void* dllist_extract_after(Dllist *dllist, int index){
-    if(((dllist->size - index - 2) < 0) || (index < 0)){
-        return NULL;
-    }
-    Node *target;
-    target = dllist->head;
-    for(int i = 0; i < index; i++){
-        target = target->next;
-    }
-    if(index == dllist-size - 1){
-        dllist->tail = target;
-    }
-    void *data = target->next->data;
-    Node *obselete = target->next->next;
-    free(obselete);
-    dllist->size--;
-    return data;
 }
