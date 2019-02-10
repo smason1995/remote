@@ -25,8 +25,9 @@ void dllist_destroy(Dllist *dllist){
     dllist->current = dllist->head;
     while(dllist->current != NULL){
         save_next = dllist->current->next;
-        free(dllist->current->data);
+        //free(dllist->current->data);
         free(dllist->current);
+        dllist->current = save_next;
     }
     free(dllist);
 }
