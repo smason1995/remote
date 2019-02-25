@@ -82,8 +82,66 @@ int main(int argc, char* argv[]){
  *      executes ssh/sftp protocol *
  ***********************************/
 int remote_action(char* cmd, char* profile){
-    char* actarr[3] = {cmd, profile, NULL}; //command array to be passed into exec
-    execvp(actarr[0], actarr);
+    char* actarr[3]; //command array to be passed into exec
+
+    if(strchr(profile, '@') != NULL){
+        /* puts elements into command array */
+        actarr[0] = cmd;
+        actarr[1] = profile;
+        actarr[2] = NULL;
+
+    }
+    else{
+        Dllist* profList = dllist_create();
+        char* homeDir = getenv("HOME");
+        char* path = strcat(homeDir, "/.config/remote/remote_profiles");
+        char* url;
+        char line[256], profName[256];
+        FILE* profFile;
+        int exists= 0;
+
+        /* reads profiles into linked list. then cleans up the file variables */
+        profFile = fopen(path, "r");
+        while(fgets(line, 255, profFile)){
+            dllist_push_back(profList, line);
+        }
+        fclose(profFile);
+    
+        /* searches profile list for wanted profile */
+        for(int i = 0; i < profList->size; i++){
+            strcpy(line, dllist_read_index(profList, i));
+            strcpy(profName, profile);
+            strcat(profName, " ");
+
+            if(strstr(line, profName) != NULL){
+                exists = 1;
+                break;
+            }
+        }
+
+        /* frees linked list */
+        dllist_destroy(profList);
+
+        /* grabs url from profile line */
+        url = strtok(line, " ");
+        url = strtok(NULL, " ");
+
+        /* puts elements into command array */
+        actarr[0] = cmd;
+        actarr[1] = url;
+        actarr[2] = NULL;
+    }
+
+    printf("about to exec\n");
+
+    printf("%s %s\n", actarr[0], actarr[1]);
+
+    char call[256];
+    strcat(strcat(strcpy(call, actarr[0]), " "), actarr[1]);
+    system(call);
+
+    /* executes CLI remote action */
+//    execvp(actarr[0], actarr);
     return 0;
 }
 
@@ -127,6 +185,7 @@ int add_profile(char* profileName, char* profileURL){
         }
     }
 
+    /* frees linked list */
     dllist_destroy(profList);
 
     if(exists == 1){
@@ -139,6 +198,7 @@ int add_profile(char* profileName, char* profileURL){
         strcat(line, " ");
         strcat(line, profileURL);
         strcat(line, "\n");
+
 
         /* appends new profile to the bottom of the list */
         profFile = fopen(path, "a");
