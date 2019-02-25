@@ -4,6 +4,10 @@ remoteDir: remote
 	else mkdir ${HOME}/.config/remote; \
 	     echo "remote directory created in .config"; \
 	fi
+	@if [ ! -f "${HOME}/.config/remote/remote_profiles" ]; \
+		then touch ${HOME}/.config/remote/remote_profiles; \
+		     echo "remote_profiles created"; \
+	fi
 
 remote: dll.o
 	gcc --std=c11 -o remote remote.c dll.o
