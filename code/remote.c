@@ -11,6 +11,8 @@
 #include<stdlib.h>
 #include<string.h>
 #include<unistd.h>
+#include<sys/wait.h>
+#include<errno.h>
 
 #include "dll.h"
 
@@ -82,66 +84,53 @@ int main(int argc, char* argv[]){
  *      executes ssh/sftp protocol *
  ***********************************/
 int remote_action(char* cmd, char* profile){
-    char* actarr[3]; //command array to be passed into exec
+    char* actarr[2]; //command array to be passed into exec
+
+    actarr[0] = cmd; //adds cmd to first position of action array
 
     if(strchr(profile, '@') != NULL){
-        /* puts elements into command array */
-        actarr[0] = cmd;
+        /* puts profile into command array */
         actarr[1] = profile;
-        actarr[2] = NULL;
-
     }
     else{
-        Dllist* profList = dllist_create();
         char* homeDir = getenv("HOME");
         char* path = strcat(homeDir, "/.config/remote/remote_profiles");
-        char* url;
-        char line[256], profName[256];
+        char line[256], name[256], url[256];
         FILE* profFile;
-        int exists= 0;
+        int exists = 0;
 
-        /* reads profiles into linked list. then cleans up the file variables */
+        /* reads list of profiles line by line */
         profFile = fopen(path, "r");
-        while(fgets(line, 255, profFile)){
-            dllist_push_back(profList, line);
-        }
-        fclose(profFile);
-    
-        /* searches profile list for wanted profile */
-        for(int i = 0; i < profList->size; i++){
-            strcpy(line, dllist_read_index(profList, i));
-            strcpy(profName, profile);
-            strcat(profName, " ");
+        while(fgets(line, sizeof(line), profFile)){
+            /* splits line into tokens */
+            strcpy(name, strtok(line, " "));
+            strcpy(url, strtok(NULL, " "));
 
-            if(strstr(line, profName) != NULL){
+            /* Found profile */
+            if(strcmp(name, profile) == 0){
+                actarr[1] = url;
                 exists = 1;
                 break;
             }
         }
+        fclose(profFile);
 
-        /* frees linked list */
-        dllist_destroy(profList);
-
-        /* grabs url from profile line */
-        url = strtok(line, " ");
-        url = strtok(NULL, " ");
-
-        /* puts elements into command array */
-        actarr[0] = cmd;
-        actarr[1] = url;
-        actarr[2] = NULL;
+        /* exits because profile doesn't exist */
+        if(exists == 0){
+            printf("%s not a known profile", name);
+            return 1;
+        }
     }
 
-    printf("about to exec\n");
-
-    printf("%s %s\n", actarr[0], actarr[1]);
-
+    /* assembles args into a string */
     char call[256];
-    strcat(strcat(strcpy(call, actarr[0]), " "), actarr[1]);
+    strcpy(call, actarr[0]);
+    strcat(call, " ");
+    strcat(call, actarr[1]);
+
+    /* executes call */
     system(call);
 
-    /* executes CLI remote action */
-//    execvp(actarr[0], actarr);
     return 0;
 }
 
@@ -154,40 +143,33 @@ int remote_action(char* cmd, char* profile){
 int add_profile(char* profileName, char* profileURL){
     char* homeDir = getenv("HOME");
     char* path = strcat(homeDir, "/.config/remote/remote_profiles");
-    char line[256];
+    char line[256], name[256], url[256];
     FILE* profFile;
-    int spaceIndex = -1;
     int exists = 0;
-    Dllist* profList = dllist_create();
 
-    /* reads list of profiles into doubly linked list*/
+    /* reads list of profiles line by line */
     profFile = fopen(path, "r");
     while(fgets(line, sizeof(line), profFile)){
-        dllist_push_back(profList, line);
-    }
-    fclose(profFile);
-
-    /* checks to make sure that the profile name or url to be written doesn't
-     * already exist */
-    for(int i = 0; i < profList->size; i++){
-        strcpy(line, dllist_read_index(profList, i)); //grabs current name-url pair from list
+        /* splits line into tokens */
+        strcpy(name, strtok(line, " "));
+        strcpy(url, strtok(NULL, " "));
 
         /* checks to make sure that name and url do not already exist */
-        if(strstr(line, profileName) != NULL){
+        if(strstr(name, profileName) != NULL){
             printf("%s already exists\n", profileName);
             exists = 1;
             break;
         }
-        else if(strstr(line, profileURL) != NULL){
+        else if(strstr(url, profileURL) != NULL){
             printf("%s already has a profile\n", profileURL);
             exists = 1;
             break;
         }
     }
+    fclose(profFile);
 
-    /* frees linked list */
-    dllist_destroy(profList);
-
+    /* exits if profile already exists
+     * otherwise, appends new line to file */
     if(exists == 1){
         printf("Failed to write %s\n", profileName);
         return 1;
@@ -198,7 +180,6 @@ int add_profile(char* profileName, char* profileURL){
         strcat(line, " ");
         strcat(line, profileURL);
         strcat(line, "\n");
-
 
         /* appends new profile to the bottom of the list */
         profFile = fopen(path, "a");
@@ -213,7 +194,19 @@ int remove_profile(char* profileName){
     return 0;
 }
 
-void list_profiles(){}
+void list_profiles(){
+    char* homeDir = getenv("HOME");
+    char* path = strcat(homeDir, "/.config/remote/remote_profiles");
+    char line[256];
+    FILE* profFile;
+
+    /* reads list of profiles into doubly linked list*/
+    profFile = fopen(path, "r");
+    while(fgets(line, sizeof(line), profFile)){
+        printf("%s", line);
+    }
+    fclose(profFile);
+}
 
 void help(){
     printf("Help Menu:\n");
