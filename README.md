@@ -4,7 +4,6 @@
     Remote is a CLI-based manager for SSH and SFTP connections via terminals.
 
 ### TODO:
-    - Rewrite from Perl into C-lang
-    - Add support for xfreerdp
-    - Add support for CLI command flags (ssh/sftp/xfreerdp)
-    - Add Generic Type Doubly Linked List API (current focus)
+    - Finsh C-lang version
+    - Update Makefile to do a full install
+    - Look into tab-completion
