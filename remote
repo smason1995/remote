@@ -1,0 +1,65 @@
+#! /usr/bin/python
+
+# Remote, SSH/SFTP profile manager
+#
+# author: Sydney Ann Mason
+# version: 20190415
+
+import sys
+import subprocess
+
+def exec_proc(cmd, pname):
+    print(cmd + ' call is currently in production')
+
+def add_profile(pname, purl):
+    print('Adding profiles is currently in production')
+
+def remove_profile(pname):
+    print('Removing profiles is currently in production')
+
+def list_profile():
+    print('Listing profiles currently in production')
+
+def help():
+    print('Help command currently in production')
+
+def main(args):
+    try:
+        if args[0] == 'ssh' or args[0] == 'sftp':
+            if len(args) == 2:
+                exec_proc(args[0], args[1])
+            elif len(args) > 2:
+                print(args[0] + ' can only take 1 argument.'+ '\n' + 'Run "remote help" for more info')
+            elif len(args) < 2:
+                print(args[0] + ' needs 1 argument.' + '\n' + 'Run "remote help" for more info')
+        elif args[0] == 'save':
+            if len(args) == 3:
+                add_profile(args[1], args[2])
+            elif len(args) > 3:
+                print(args[0]+ ' can only take 2 arguments.' + '\n' + 'Run "remote help" for more info')
+            elif len(args) < 3:
+                print(args[0] + ' needs 2 arguments.' + '\n' + 'Run "remote help" for more info')
+        elif args[0] == 'remove':
+            if len(args) == 2:
+                remove_profile(args[1])
+            elif len(args) > 2:
+                print(args[0] + ' can only take 1 argument.' + '\n' + 'Run "remote help" for more info')
+            elif len(args) < 2:
+                print(args[0] + ' needs 1 argument.' + '\n' + 'Run "remote help" for more info')
+        elif args[0] == 'print':
+            if len(args) == 1:
+                list_profile()
+            elif len(args) > 1:
+                print(args[0] + ' takes no arguments.' + '\n' + 'Run "remote help" for more info')
+        elif args[0] == 'help':
+            if len(args) == 1:
+                help()
+            elif len(args) > 1:
+                print(args[0] + ' takes no arguments.' + '\n' + 'Run "remote help" for more info')
+        else:
+            print(args[0] + ' command not found')
+    except:
+        print('An error has occurred')
+
+if __name__ == "__main__":
+    main(sys.argv[1:]) #drops remote from list of command line arguments

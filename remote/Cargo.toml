@@ -1,8 +1,0 @@
-[package]
-name = "remote"
-version = "0.1.0"
-authors = ["Sydney Ann Mason <smason516@outlook.com>"]
-edition = "2018"
-
-[dependencies]
-dirs = "1.0.5"
