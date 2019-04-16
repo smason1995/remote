@@ -1,11 +1,25 @@
 # REMOTE: SSH/SFTP Profile Manager   
 #### Author: Sydney Ann Mason
-#### Last Revised Date: 04/15/2019
+#### Current version: 1.0
+#### Last Revised Date: 04/16/2019
 
 ### Desc:
-    Remote is a CLI-based manager for SSH and SFTP connections via terminals.
+    Remote is a CLI-based manager for SSH and SFTP connections via terminals while being terminal agnostic.
 
+### Dependencies:
+    - `pathlib` library for python3
+
+### Setup:
+    ```
+    $cd path/to/remote/repo
+    $chmod +x remote
+    $chmod +x install.sh
+    $./install.sh
+    ```
 ### TODO:
-    - Finsh Python3 version
-    - Update Makefile to do a full install
-    - Look into tab-completion
+    - Make installation medium(s)
+    - Allow adding and removal of multiple profiles at once
+    - Make profiles easily editable via remote
+    - Encrypt profile list for added security
+    - Allow remote to run ssh urls directly
+    - Make distro packages (aiming to support Debian/Ubuntu, Arch, Fedora, Opensuse)
