@@ -3,7 +3,8 @@
 # Remote, SSH/SFTP profile manager
 #
 # author: Sydney Ann Mason
-# version: 20190415
+# version: 1.0
+# date: 2019-04-16
 
 # Imports
 import sys # Allows you to access system information
