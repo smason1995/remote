@@ -10,12 +10,12 @@
     - `pathlib` library for python3
 
 ### Setup:
-    ```
-    $cd path/to/remote/repo
-    $chmod +x remote
-    $chmod +x install.sh
-    $./install.sh
-    ```
+```
+$cd path/to/remote/repo
+$chmod +x remote
+$chmod +x install.sh
+$./install.sh
+```
 ### TODO:
     - Make installation medium(s)
     - Allow adding and removal of multiple profiles at once
