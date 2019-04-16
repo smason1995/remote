@@ -1,28 +1,83 @@
-#! /usr/bin/python
+#!/usr/bin/python3
 
 # Remote, SSH/SFTP profile manager
 #
 # author: Sydney Ann Mason
 # version: 20190415
 
-import sys
-import subprocess
+# Imports
+import sys # Allows you to access system information
+import subprocess # Allows you to run CLI commands as a subprocess
+from pathlib import Path # Allows you to grab the user Home Directory
 
+# Checks for profile name
+# If it does, run SSH or SFTP on the paired url
+# If it doesn't, inform user and exits
 def exec_proc(cmd, pname):
-    print(cmd + ' call is currently in production')
+    ran = False
+    path = str(Path.home()) + '/.config/remote/remote_profiles'
+    with open(path, 'r') as pfile:
+        profiles = [line.strip() for line in pfile]
+    for profile in profiles:
+        line = profile.split()
+        if line[0] == pname:
+            subprocess.run([cmd + ' ' + line[1]], shell=True)
+            ran = True
+            break
+    if ran == False:
+        print(pname + ' was not found in list of profiles')
 
+# Checks is a profile name or url exists
+# If it does, informs user and exits
+# If it doesn't, appends it to list of profiles
 def add_profile(pname, purl):
-    print('Adding profiles is currently in production')
+    path = str(Path.home()) + '/.config/remote/remote_profiles'
+    with open(path, 'r') as pfile:
+        profiles = [line.strip() for line in pfile]
+    for profile in profiles:
+        line = profile.split()
+        if pname == line[0]:
+            print(pname + ' already exists.' + '\n' + 'Run "remote list" for more info.')
+        elif purl == line[1]:
+            print(purl + ' already exists.' + '\n' + 'Run "remote list" for more info.')
+    with open(path, 'a') as pfile:
+        pfile.write(pname + ' ' + purl + '\n')
 
+# Looks for and deletes specified profile
 def remove_profile(pname):
-    print('Removing profiles is currently in production')
+    path = str(Path.home()) + '/.config/remote/remote_profiles'
+    with open(path, 'r') as pfile:
+        profiles = [line.strip() for line in pfile]
+    with open(path, 'w') as pfile:
+        for profile in profiles:
+            line = profile.split()
+            if pname != line[0]:
+                pfile.write(profile + '\n')
 
+# Displays profiles to screen
 def list_profile():
-    print('Listing profiles currently in production')
+    path = str(Path.home()) + '/.config/remote/remote_profiles'
+    pfile = open(path, 'r')
+    profiles = [line.strip() for line in pfile]
+    pfile.close()
+    for profile in profiles:
+        print(profile)
 
+# Displays help menu to screen
 def help():
-    print('Help command currently in production')
+    print('remote is an ssh/sftp profile manager designed to be terminal emulator agnostic. It allows you to\n' +
+            'easily add, view, delete, and run ssh or sftp with a list of known profiles.\n')
+    print('remote stores known profiles in ${HOME}/.config/remote\n')
+    print('Commands:')
+    print('ssh - looks for and executes ssh on selected profile.\n\tUsage: remote ssh foo')
+    print('sftp - similar to ssh, except it runs sftp on selected profile.\n\tUsage: remote sftp sftp foo')
+    print('save - checks to see if profile name or url already exists in a pairing, appends it to list if it doesn\'t.\n\t' +
+            'Usage: remote save foo bar')
+    print('remove - looks and deletes selected profile from list of known profiles.\n\tUsage: remote remove foo')
+    print('print - displays all known profiles to the screen.\n\tUsage: remote print')
+    print('help - displays this info to the screen\n\tUsage: do what you just did')
 
+# Parses user input and determines the next best course of action
 def main(args):
     try:
         if args[0] == 'ssh' or args[0] == 'sftp':
@@ -59,7 +114,8 @@ def main(args):
         else:
             print(args[0] + ' command not found')
     except:
-        print('An error has occurred')
+        print('Unexpected error: ' + sys.exc_info()[0])
 
+# Calls main
 if __name__ == "__main__":
     main(sys.argv[1:]) #drops remote from list of command line arguments
