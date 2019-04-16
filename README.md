@@ -7,7 +7,7 @@
     Remote is a CLI-based manager for SSH and SFTP connections via terminals while being terminal agnostic.
 
 ### Dependencies:
-    - <b>pathlib</b> library for python3
+<b>pathlib</b> library for python3
 
 ### Setup:
 ```
