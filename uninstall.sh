@@ -1,2 +1,2 @@
-sudo rm /usr/bin/remote
+sudo rm /bin/remote
 rm -rf ${HOME}/.config/remote
