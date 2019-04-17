@@ -17,7 +17,6 @@ $chmod +x install.sh
 $./install.sh
 ```
 ### TODO:
-    - Make installation medium(s)
     - Allow adding and removal of multiple profiles at once
     - Make profiles easily editable via remote
     - Encrypt profile list for added security
