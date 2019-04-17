@@ -15,16 +15,21 @@ from pathlib import Path # Allows you to grab the user Home Directory
 # If it does, run SSH or SFTP on the paired url
 # If it doesn't, inform user and exits
 def exec_proc(cmd, pname):
+    # True if command has been ran
     ran = False
+    # Gets path to profile list
     path = str(Path.home()) + '/.config/remote/remote_profiles'
+    # Reads in profiles from file
     with open(path, 'r') as pfile:
         profiles = [line.strip() for line in pfile]
+    # Finds profile and runs url as subprocess
     for profile in profiles:
         line = profile.split()
         if line[0] == pname:
             subprocess.run([cmd + ' ' + line[1]], shell=True)
             ran = True
             break
+    # Prints message to screen if command was never run
     if ran == False:
         print(pname + ' was not found in list of profiles')
 
@@ -32,23 +37,37 @@ def exec_proc(cmd, pname):
 # If it does, informs user and exits
 # If it doesn't, appends it to list of profiles
 def add_profile(pname, purl):
+    # True if  name or url already exists in file (default: false)
+    exists = False
+    # Gets path to profile list
     path = str(Path.home()) + '/.config/remote/remote_profiles'
+    # Reads in profiles from file
     with open(path, 'r') as pfile:
         profiles = [line.strip() for line in pfile]
+    # Checks to make sure that profile name and url are not in use
     for profile in profiles:
         line = profile.split()
         if pname == line[0]:
             print(pname + ' already exists.' + '\n' + 'Run "remote list" for more info.')
+            exists = True
+            break
         elif purl == line[1]:
             print(purl + ' already exists.' + '\n' + 'Run "remote list" for more info.')
-    with open(path, 'a') as pfile:
-        pfile.write(pname + ' ' + purl + '\n')
+            exists = True
+            break
+    # Writes profile to list
+    if exists == False:
+        with open(path, 'a') as pfile:
+            pfile.write(pname + ' ' + purl + '\n')
 
 # Looks for and deletes specified profile
 def remove_profile(pname):
+    # Gets path to profile list
     path = str(Path.home()) + '/.config/remote/remote_profiles'
+    # Reads in profiles from list
     with open(path, 'r') as pfile:
         profiles = [line.strip() for line in pfile]
+    # Rewrites profilse minus one deleted one
     with open(path, 'w') as pfile:
         for profile in profiles:
             line = profile.split()
@@ -57,10 +76,12 @@ def remove_profile(pname):
 
 # Displays profiles to screen
 def list_profile():
+    # Gets path to profile list
     path = str(Path.home()) + '/.config/remote/remote_profiles'
-    pfile = open(path, 'r')
-    profiles = [line.strip() for line in pfile]
-    pfile.close()
+    # Reads in profiles from file
+    with open(path, 'r') as pfile:
+        profiles = [line.strip() for line in pfile]
+    # Prints profiles to screen
     for profile in profiles:
         print(profile)
 
@@ -80,7 +101,10 @@ def help():
 
 # Parses user input and determines the next best course of action
 def main(args):
+    # In each nested conditonal successeful param checks are first,
+    # then all param num failures are list
     try:
+        # For SSH/SFTP
         if args[0] == 'ssh' or args[0] == 'sftp':
             if len(args) == 2:
                 exec_proc(args[0], args[1])
@@ -88,6 +112,7 @@ def main(args):
                 print(args[0] + ' can only take 1 argument.'+ '\n' + 'Run "remote help" for more info')
             elif len(args) < 2:
                 print(args[0] + ' needs 1 argument.' + '\n' + 'Run "remote help" for more info')
+        # For saving new profiles
         elif args[0] == 'save':
             if len(args) == 3:
                 add_profile(args[1], args[2])
@@ -95,6 +120,7 @@ def main(args):
                 print(args[0]+ ' can only take 2 arguments.' + '\n' + 'Run "remote help" for more info')
             elif len(args) < 3:
                 print(args[0] + ' needs 2 arguments.' + '\n' + 'Run "remote help" for more info')
+        # For deleting known profiles
         elif args[0] == 'remove':
             if len(args) == 2:
                 remove_profile(args[1])
@@ -102,11 +128,13 @@ def main(args):
                 print(args[0] + ' can only take 1 argument.' + '\n' + 'Run "remote help" for more info')
             elif len(args) < 2:
                 print(args[0] + ' needs 1 argument.' + '\n' + 'Run "remote help" for more info')
+        # For seeing profiles
         elif args[0] == 'print':
             if len(args) == 1:
                 list_profile()
             elif len(args) > 1:
                 print(args[0] + ' takes no arguments.' + '\n' + 'Run "remote help" for more info')
+        # For gettting help
         elif args[0] == 'help':
             if len(args) == 1:
                 help()
