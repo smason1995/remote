@@ -12,7 +12,6 @@
 ### Setup:
 ```
 $cd path/to/remote/repo
-$chmod +x remote
 $chmod +x install.sh
 $./install.sh
 ```
@@ -25,3 +24,4 @@ $./install.sh
     - Write MAN page
     - Add support for Remote Desktop Protocol (RDP)
     - Attempt to get support for Mac (if the reousrces to test it become available)
+    - Add support for TAB completion
