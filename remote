@@ -65,18 +65,19 @@ def add_profile(args):
             pfile.write(pname + ' ' + purl + '\n')
 
 # Looks for and deletes specified profile
-def remove_profile(pname):
-    # Gets path to profile list
-    path = str(Path.home()) + '/.config/remote/remote_profiles'
-    # Reads in profiles from list
-    with open(path, 'r') as pfile:
-        profiles = [line.strip() for line in pfile]
-    # Rewrites profilse minus one deleted one
-    with open(path, 'w') as pfile:
-        for profile in profiles:
-            line = profile.split()
-            if pname != line[0]:
-                pfile.write(profile + '\n')
+def remove_profile(args):
+    for word in args:
+        # Gets path to profile list
+        path = str(Path.home()) + '/.config/remote/remote_profiles'
+        # Reads in profiles from list
+        with open(path, 'r') as pfile:
+            profiles = [line.strip() for line in pfile]
+        # Rewrites profilse minus one deleted one
+        with open(path, 'w') as pfile:
+            for profile in profiles:
+                line = profile.split()
+                if word != line[0]:
+                    pfile.write(profile + '\n')
 
 # Displays profiles to screen
 def list_profile():
@@ -97,9 +98,9 @@ def help():
     print('Commands:')
     print('ssh - looks for and executes ssh on selected profile.\n\tUsage: remote ssh foo')
     print('sftp - similar to ssh, except it runs sftp on selected profile.\n\tUsage: remote sftp sftp foo')
-    print('save - checks to see if profile name or url already exists in a pairing, appends it to list if it doesn\'t.\n\t' +
+    print('save - checks to see if profile name or url from a given list already exists in a pairing, appends them to the known pairings list if they don\'t.\n\t' +
             'Usage: remote save foo bar')
-    print('remove - looks and deletes selected profile from list of known profiles.\n\tUsage: remote remove foo')
+    print('remove - looks and deletes selected profile(s) from list of known profiles.\n\tUsage: remote remove foo')
     print('print - displays all known profiles to the screen.\n\tUsage: remote print')
     print('help - displays this info to the screen\n\tUsage: do what you just did')
 
@@ -118,18 +119,18 @@ def main(args):
                 print(args[0] + ' needs 1 argument.' + '\n' + 'Run "remote help" for more info')
         # For saving new profiles
         elif args[0] == 'save':
-            if len(args) >= 3:
+            if len(args[1:])%2 != 0:
+                print(args[0] + ' needs an equal number of profiles to urls.' + '\n' + 'Run "remote help" for more info')
+            elif len(args) >= 3:
                 add_profile(args[1:])
-            else:
+            elif len(args) < 3:
                 print(args[0] + ' needs at least 3 arguments.' + '\n' + 'Run "remote help" for more info')
         # For deleting known profiles
         elif args[0] == 'remove':
-            if len(args) == 2:
-                remove_profile(args[1])
-            elif len(args) > 2:
-                print(args[0] + ' can only take 1 argument.' + '\n' + 'Run "remote help" for more info')
+            if len(args) >= 2:
+                remove_profile(args[1:])
             elif len(args) < 2:
-                print(args[0] + ' needs 1 argument.' + '\n' + 'Run "remote help" for more info')
+                print(args[0] + ' needs at least 1 argument.' + '\n' + 'Run "remote help" for more info')
         # For seeing profiles
         elif args[0] == 'print':
             if len(args) == 1:
