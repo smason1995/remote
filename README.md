@@ -2,6 +2,7 @@
 #### Author: Sydney Ann Mason
 #### Current version: 1.0
 #### Last Revised Date: 04/16/2019
+#### Branch: TESTING
 
 ### Desc:
     Remote is a CLI-based manager for SSH and SFTP connections via terminals while being terminal agnostic.
