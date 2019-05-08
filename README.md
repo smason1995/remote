@@ -2,6 +2,7 @@
 #### Author: Sydney Ann Mason
 #### Current version: 1.0
 #### Last Revised Date: 04/16/2019
+#### Branch: MASTER
 
 ### Desc:
     Remote is a CLI-based manager for SSH and SFTP connections via terminals while being terminal agnostic.
@@ -16,8 +17,6 @@ $chmod +x install.sh
 $./install.sh
 ```
 
-### DEVELOPMENT
-    All changes/updates are made to the testing branch and moved into the master branch when known to work properly in most use cases.
 ### TODO (needs to be prioritized):
     - Allow adding and removal of multiple profiles at once
     - Make profiles easily editable via remote
