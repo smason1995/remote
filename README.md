@@ -21,7 +21,7 @@ $./install.sh
     - Encrypt profile list for added security
     - Allow remote to run ssh urls directly
     - Make distro packages (aiming to support Debian/Ubuntu, Arch, Fedora, Opensuse)
-    - Write MAN page
     - Add support for Remote Desktop Protocol (RDP)
     - Attempt to get support for Mac (if the reousrces to test it become available)
     - Add support for TAB completion
+    - Use fakeroot instead of SUDO (to happen very soon)
