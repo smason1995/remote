@@ -15,6 +15,9 @@ $cd path/to/remote/repo
 $chmod +x install.sh
 $./install.sh
 ```
+
+### DEVELOPMENT
+    All changes/updates are made to the testing branch and moved into the master branch when known to work properly in most use cases.
 ### TODO (needs to be prioritized):
     - Allow adding and removal of multiple profiles at once
     - Make profiles easily editable via remote
