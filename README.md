@@ -17,7 +17,7 @@ $chmod +x install.sh
 $./install.sh
 ```
 ### TODO (needs to be prioritized):
-    - Allow adding and removal of multiple profiles at once
+    - Allow adding and removal of multiple profiles at once (WORKING)
     - Make profiles easily editable via remote
     - Encrypt profile list for added security
     - Allow remote to run ssh urls directly
