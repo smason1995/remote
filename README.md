@@ -1,7 +1,7 @@
 # REMOTE: SSH/SFTP Profile Manager   
 #### Author: Sydney Ann Mason
 #### Current version: 2.0
-#### Last Revised Date: 04/16/2019
+#### Last Revised Date: 5/9/2019
 #### Branch: TESTING
 
 ### Desc:
