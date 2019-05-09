@@ -1,6 +1,6 @@
 # REMOTE: SSH/SFTP Profile Manager   
 #### Author: Sydney Ann Mason
-#### Current version: 1.0
+#### Current version: 1.5
 #### Last Revised Date: 04/16/2019
 #### Branch: TESTING
 
@@ -17,7 +17,6 @@ $chmod +x install.sh
 $./install.sh
 ```
 ### TODO (needs to be prioritized):
-    - Make profiles easily editable via remote
     - Encrypt profile list for added security
     - Allow remote to run ssh urls directly
     - Make distro packages (aiming to support Debian/Ubuntu, Arch, Fedora, Opensuse)
