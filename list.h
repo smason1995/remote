@@ -5,6 +5,7 @@
 #include<string>
 #include<vector>
 #include<exception>
+#include<regex>
 
 class List {
     public:

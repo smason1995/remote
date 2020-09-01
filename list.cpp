@@ -9,12 +9,15 @@ using namespace std;
 List::List(){
     ifstream ifile;
     string line = "";
+    regex newline_re("\n+");
 
     ifile.open(confdir);
 
     while(ifile){
         getline(ifile, line);
-        proflist.push_back(line);
+        line = regex_replace(line, newline_re, "");
+        if(!line.empty())
+            proflist.push_back(line);
     }
 
     ifile.close();
@@ -31,15 +34,15 @@ List::~List(){}
  * Returns 1 is failed
  */
 int List::write(string profToAdd){
-    ofstream ofile;
     try{
         proflist.push_back(profToAdd); // Appends profile to proflist
 
-        ofile.open(confdir); // Opens profiles.txt
+        ofstream ofile = ofstream(confdir, ofstream::trunc); // Opens profiles.txt
 
         /* Writes proflist to profiles.txt */
         for(int i = 0; i < proflist.size(); i++){
             ofile << proflist[i];
+            ofile << "\n";
         }
 
         ofile.close(); // Closes profiles.txt
@@ -59,7 +62,6 @@ int List::write(string profToAdd){
  */
 int List::remove(string profToRemove){
     bool found = false;
-    ofstream ofile;
 
     /* Finds the given profile to remove and erases it for proflist */
     for(int i = 0; i < proflist.size(); i++){
@@ -71,18 +73,19 @@ int List::remove(string profToRemove){
         }
     }
 
-    ofile.open(confdir); // Opens profiles.txt
+    ofstream ofile = ofstream(confdir, ofstream::trunc); // Opens profiles.txt
 
     /* Writes proflist to profiles.txt */
     for(int i = 0; i < proflist.size(); i++){
         ofile << proflist[i];
+        ofile << "\n";
     }
 
     ofile.close(); // Closes profiles.txt
     
-    if(found){
-        return 0; // Profile found and removed from list
-    }
+    if(found)
+        return 0; // Profile found and removed from list}
+
     return 1; // Profile not found and/or not removed from list
 }
 
@@ -103,11 +106,10 @@ string List::get_profile(string profToFind){
         }
     }
 
-    if(found){
+    if(found)
         return ret_string; // Profile was found
-    }
-    return "Profile not found"; // Profile was not found
 
+    return "Profile not found"; // Profile was not found
 }
 
 /*
